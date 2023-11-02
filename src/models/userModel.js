@@ -8,11 +8,11 @@ const userSchema = new mongoose.Schema(
     mobile: { type: String, required: true },
     password: { type: String, required: true },
     profilePic: { type: String },
-    otp:{type:String,required:true},
+    otp: { type: String },
     createdAt: { type: Date, default: Date.now() },
   },
   { timestamps: true, versionKey: false }
-); 
+);
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;

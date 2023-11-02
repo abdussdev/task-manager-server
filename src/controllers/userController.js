@@ -58,7 +58,7 @@ exports.register = async (req, res) => {
 
 exports.resendOTP = async (req, res) => {
   try {
-    const email = req.body;
+    const email = req.body.email;
     const otp = Math.floor(100000 + Math.random() * 900000);
 
     // Email data
@@ -96,8 +96,8 @@ exports.resendOTP = async (req, res) => {
 
 exports.verifyEmail = async (req, res) => {
   try {
-    const email = req.body;
-    const otp = req.body;
+    const email = req.params.email;
+    const otp = req.params.otp;
 
     const user = await User.findOne({ email });
 
@@ -153,21 +153,61 @@ exports.login = async (req, res) => {
     res.json({ token, user });
   } catch (error) {
     console.error("Error during login:", error);
-    res.status(500).json({ error: "An error occurred while processing the login request: " + error.message });
+    res.status(500).json({
+      error:
+        "An error occurred while processing the login request: " +
+        error.message,
+    });
   }
 };
 
 exports.readProfile = async (req, res) => {
   try {
-  } catch (error) {}
+    const userId = req.userId;
+
+    const userProfile = await User.findOne({ userId });
+    if (!userProfile) {
+      return res.status(404).json({ error: "Profile not found" });
+    }
+
+    res.status(200).json(userProfile);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
 exports.updateProfile = async (req, res) => {
   try {
-  } catch (error) {}
+    const userId = req.userId;
+    const profileData = req.body;
+
+    const userProfile = await User.findOneAndUpdate({ userId }, profileData, {
+      new: true,
+    });
+    if (!userProfile) {
+      return res.status(404).json({ error: "Profile not found" });
+    }
+
+    res.status(200).json({ message: "Profile updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
 exports.deleteProfile = async (req, res) => {
   try {
-  } catch (error) {}
+    const userId = req.userId;
+
+    const userProfile = await User.findOneAndDelete({ userId });
+    if (!userProfile) {
+      return res.status(404).json({ error: "Profile not found" });
+    }
+
+    res.status(204).json({ message: "Profile deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
