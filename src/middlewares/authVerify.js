@@ -23,7 +23,11 @@ const authVerify = (req, res, next) => {
         return res.status(401).json({ message: "User not found" });
       }
 
-      req.user = user;
+      req.user = {
+        userId: decoded.userId,
+        email: decoded.email,
+        name: decoded.name,
+      };
       next();
     } catch (error) {
       console.error(error);

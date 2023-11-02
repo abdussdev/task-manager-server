@@ -1,5 +1,6 @@
 const express = require("express");
 const userController = require("../controllers/userController");
+const taskController = require("../controllers/taskController");
 const authVerify = require("../middlewares/authVerify");
 
 const router = express.Router();
@@ -14,5 +15,10 @@ router.put("/update-profile", authVerify, userController.updateProfile);
 router.delete("/delete-profile", authVerify, userController.deleteProfile);
 
 // Task routes
+router.post("/create-task", authVerify, taskController.createTask);
+router.put("/update-task/:taskId", authVerify, taskController.updateTask);
+router.get("/read-all-task", authVerify, taskController.readAllTask);
+router.get("/read-task/:taskId", authVerify, taskController.readSingleTask);
+router.delete("/delete-task/:taskId", authVerify, taskController.deleteTask);
 
 module.exports = router;

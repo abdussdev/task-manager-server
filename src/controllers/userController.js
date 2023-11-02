@@ -163,7 +163,10 @@ exports.login = async (req, res) => {
 
 exports.readProfile = async (req, res) => {
   try {
-    const userId = req.userId;
+    const userId = req.user.userId;
+    if (!userId) {
+      return res.status(400).json({ error: "Missing userId in the request" });
+    }
 
     const userProfile = await User.findOne({ userId });
     if (!userProfile) {
@@ -179,8 +182,12 @@ exports.readProfile = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
   try {
-    const userId = req.userId;
+    const userId = req.user.userId;
     const profileData = req.body;
+
+    if (!userId) {
+      return res.status(400).json({ error: "Missing userId in the request" });
+    }
 
     const userProfile = await User.findOneAndUpdate({ userId }, profileData, {
       new: true,
@@ -198,7 +205,11 @@ exports.updateProfile = async (req, res) => {
 
 exports.deleteProfile = async (req, res) => {
   try {
-    const userId = req.userId;
+    const userId = req.user.userId;
+
+    if (!userId) {
+      return res.status(400).json({ error: "Missing userId in the request" });
+    }
 
     const userProfile = await User.findOneAndDelete({ userId });
     if (!userProfile) {
