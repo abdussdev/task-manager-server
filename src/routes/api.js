@@ -21,6 +21,7 @@ router.put("/update-task/:taskId", authVerify, taskController.updateTask);
 router.put("/update-task-status/:taskId", authVerify, taskController.updateTaskStatus);
 router.get("/read-all-task", authVerify, taskController.readAllTask);
 router.get("/read-task/:taskId", authVerify, taskController.readSingleTask);
+router.get("/list-task-by-status", authVerify, taskController.listTaskByStatus);
 router.delete("/delete-task/:taskId", authVerify, taskController.deleteTask);
 
 module.exports = router;

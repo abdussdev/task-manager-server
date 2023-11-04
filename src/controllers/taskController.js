@@ -113,6 +113,24 @@ exports.readSingleTask = async (req, res) => {
   }
 };
 
+exports.listTaskByStatus = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { status } = req.query;
+
+    // Find tasks with the specified status for the authenticated user
+    const tasks = await Task.find({ userId, status });
+
+    res.json({
+      message: 'Tasks retrieved successfully',
+      tasks,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 exports.deleteTask = async (req, res) => {
   try {
     const userId = req.user.userId;
